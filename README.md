@@ -22,7 +22,7 @@ This is an **Expense Tracker** web application built as part of the CS50 course 
 
 1. **Clone the Repository**:
    ```bash
-   git clone [https://github.com/amanmauryas/expense_tracker.git](https://github.com/amanmauryas/cs50_expense_tracker.git)
+   git clone https://github.com/amanmauryas/expense_tracker.git
    cd cs50_expense_tracker
 2. **Install Dependencies**:
    You may need to install the required libraries, particularly Flask:
