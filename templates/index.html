@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2D4B77;
+            padding: 15px 30px;
+            color: white;
+        }
+
+        header img {
+            width: 60px;
+            height: auto;
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Container and other sections */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            flex: 1;
+            margin: 10px;
+            border-radius: 8px;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .income {
+            background: #4CAF50;
+        }
+
+        .expense {
+            background: #F44336;
+        }
+
+        .balance {
+            background: #2196F3;
+        }
+
+        .actions {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            text-align: center;
+            color: #fff;
+            background-color: #2D4B77;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            background-color: #2196F3;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .transactions-area {
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .transactions {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactions th,
+        .transactions td {
+            padding: 15px;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .transactions th {
+            background-color: #2D4B77;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .transactions .income {
+            background-color: #E8F5E9;
+            color: #388E3C;
+        }
+
+        .transactions .expense {
+            background-color: #FFEBEE;
+            color: #D32F2F;
+        }
+
+        .transactions tr:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+
+        /* Delete Button Style */
+        .delete-btn {
+            background-color: #D32F2F;
+            padding: 5px 10px;
+            color: #fff;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            opacity: 0.9;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .transactions {
+                font-size: 14px;
+            }
+
+            .transactions th,
+            .transactions td {
+                padding: 12px;
+            }
+        }
+           /* Footer Styles */
+    footer {
+        background-color: #2D4B77;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+    }
+    footer p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #ffffff;
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <img src="https://prod-discovery.edx-cdn.org/cdn-cgi/image/width=auto,height=auto,quality=75,format=webp/organization/logos/4f8cb2c9-589b-4d1e-88c1-b01a02db3a9c-42611123eb6a.png" alt="edX Logo">
+        <h1>Expense Tracker</h1>
+        <div class="header-btns">
+            <a href="/add_transaction" class="btn">Add Transaction</a>
+            <a href="/" class="btn back-btn">Back to Home</a>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <div class="summary">
+            <div class="card income">
+                <h2>Total Income</h2>
+                <p>Rs.{{ total_income }}</p>
+            </div>
+            <div class="card expense">
+                <h2>Total Expenses</h2>
+                <p>Rs.{{ total_expenses }}</p>
+            </div>
+            <div class="card balance">
+                <h2>Balance</h2>
+                <p>Rs.{{ balance }}</p>
+            </div>
+        </div>
+
+        <!-- Transactions Section -->
+        <h2>Transactions</h2>
+        <div class="transactions-area">
+            <table class="transactions">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr class="{{ 'income' if transaction.type == 'Income' else 'expense' }}">
+                        <td>{{ transaction.description }}</td>
+                        <td>{{ transaction.type }}</td>
+                        <td>Rs.{{ transaction.amount }}</td>
+                        <td>{{ transaction.date }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_transaction', transaction_id=transaction.id) }}" method="POST">
+                                <button type="submit" class="delete-btn">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<!-- Footer Section -->
+<footer>
+        <p>© 2024 Expense Tracker. All rights reserved.</p>
+        <p>Made with ♥ by Aman Maurya for edx CS50 Course Project Requirement</p>
+</footer>
+</body>
+</html>
